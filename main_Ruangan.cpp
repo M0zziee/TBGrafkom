@@ -1,5 +1,9 @@
 #include <GL/glut.h>
 #include <cmath>
+// Simbol Untuk Menentukan Kode Bagian Mana Yang Dicoding Oleh 
+// M0ZZY = //***
+// (Naufal) = //??   <-- ganti pakai nickname dan simbol tersendiri
+// (Arief) = //??    <-- ganti pakai nickname dan simbol tersendiri
 
 // Variabel untuk kontrol kamera
 float cameraAngleX = 5.0f; 
@@ -8,15 +12,15 @@ float cameraDistance = 70.0f;
 
 int lastMouseX, lastMouseY; // Posisi terakhir kursor mouse
 bool isDragging = false; // Status apakah mouse sedang digunakan
-
+//***
 void init() {
     glClearColor(0.5, 0.5, 0.5, 1.0); // Warna latar belakang abu-abu
     glEnable(GL_DEPTH_TEST);          // Mengaktifkan depth testing
 }
-
+//***
 void drawCube(float x, float y, float z, float width, float height, float depth) {
   
-  //Biar Tidak Riweh
+  //*** Biar Tidak Riweh
   //*** Width = Lebar
   //*** Height = Tinggi
   //*** Depth = Kedalaman / Deep nickdeep ???
@@ -59,7 +63,7 @@ void drawCube(float x, float y, float z, float width, float height, float depth)
     glVertex3f(x, y, z - depth);
     glEnd();
 }
-
+//***
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -97,7 +101,7 @@ void reshape(int w, int h) {
     gluPerspective(45.0, (double)w / (double)h, 1.0, 100.0);
     glMatrixMode(GL_MODELVIEW);
 }
-
+//***
 // Fungsi untuk menangani pergerakan mouse
 void mouseMotion(int x, int y) {
     if (isDragging) {
@@ -119,7 +123,7 @@ void mouseMotion(int x, int y) {
         glutPostRedisplay(); // Render ulang
     }
 }
-
+//***
 // Fungsi untuk menangani klik mouse
 void mouseClick(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON) {
