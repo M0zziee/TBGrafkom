@@ -1,2 +1,2 @@
-# TBGrafkom
-tugas besar graffkom membuat sebuah ruangan studio game
+# Tugas Besar Grafika Komputer
+tugas besar graffkom membuat sebuah pyramid
