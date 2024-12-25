@@ -21,6 +21,7 @@ void init() {
     glEnable(GL_DEPTH_TEST);          // Mengaktifkan depth testing
     glEnable(GL_LIGHTING);            // Aktifkan pencahayaan
     glEnable(GL_LIGHT0);              // Aktifkan sumber cahaya 0
+    glEnable(GL_NORMALIZE);           // Normalisasi norma permukaan
 
     // Atur sumber cahaya
     GLfloat lightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
@@ -62,6 +63,15 @@ void drawLightCube() {
     glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
 }
 
+void drawCube() {  //by naufal
+    glPushMatrix();
+    glTranslatef(0.0f, -15.0f, 0.0f); // Posisikan kubus di bawah oktahedron
+    glScalef(-70.0f, 30.0f, 80.0f);    // Sesuaikan ukuran kubus
+    glColor3f(0.0f, 0.0f, 1.0f);     // Warna biru untuk kubus
+    glutSolidCube(1.0f);
+    glPopMatrix();
+}
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -78,11 +88,17 @@ void display() {
     GLfloat lightPosition[] = { lightPosX, lightPosY, lightPosZ, 1.0f };
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
+    // Tambahkan material
+    GLfloat materialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f }; // Warna putih
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDiffuse);
+
     glPushMatrix();
     glScalef(20.0f, 20.0f, 20.0f); // Perbesar oktahedron
     glColor3f(1.0f, 1.0f, 1.0f);   // Warna putih untuk oktahedron
     glutSolidOctahedron();
     glPopMatrix();
+
+    drawCube(); // pemanggilan function cube
 
     if (showAxes) {
         drawAxes();
@@ -95,11 +111,12 @@ void display() {
     glutSwapBuffers();
 }
 
+
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45.0, (double)w / (double)h, 1.0, 100.0);
+    gluPerspective(45.0, (double)w / (double)h, 1.0, 200.0);
     glMatrixMode(GL_MODELVIEW);
 }
 
