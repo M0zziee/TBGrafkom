@@ -12,6 +12,16 @@ float lightPosY = 10.0f;
 float lightPosZ = 10.0f;
 bool showLightCube = true; // Status untuk menampilkan kubus penanda cahaya
 
+// posisi awan pertama
+float cloud1PosX = 20.0f;
+float cloud1PosY = 24.0f;
+float cloud1PosZ = -29.0f;
+
+// posisi awan kedua
+float cloud2PosX = -20.0f;
+float cloud2PosY = 24.0f;
+float cloud2PosZ = -29.0f;
+
 int lastMouseX, lastMouseY; // Posisi terakhir kursor mouse
 bool isDragging = false; // Status apakah mouse sedang digunakan
 bool showAxes = false; // Status untuk menampilkan garis kartesius
@@ -53,14 +63,101 @@ void drawAxes() {
     glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
 }
 
-void drawLightCube() {
-    glDisable(GL_LIGHTING); // Matikan pencahayaan untuk kubus
+void drawLight() { 
+    glDisable(GL_LIGHTING); // Matikan pencahayaan untuk bola matahari
     glPushMatrix();
+
+    // Posisikan bola matahari di lokasi cahaya
     glTranslatef(lightPosX, lightPosY, lightPosZ);
-    glColor3f(1.0f, 1.0f, 0.0f); // Warna kuning untuk kubus
-    glutSolidCube(1.0f);
+
+    // Membuat efek warna gradasi dari oranye ke kuning
+    int slices = 50; // Jumlah potongan bola
+    int stacks = 50; // Jumlah tumpukan bola
+    float step = 1.0f / stacks; // Langkah gradasi warna berdasarkan tumpukan
+
+    for (int i = 0; i < stacks; i++) {
+        float t = i * step;        // Fraksi warna dari 0.0 ke 1.0
+        float nextT = (i + 1) * step;
+
+        float r = 1.0f;           // Komponen merah (selalu penuh untuk oranye dan kuning)
+        float g = 0.5f + 0.5f * t; // Komponen hijau (bertambah untuk gradasi ke kuning)
+        float b = 0.0f;           // Komponen biru (nol untuk oranye ke kuning)
+
+        glColor3f(r, g, b);       // Atur warna untuk tumpukan saat ini
+        glBegin(GL_QUAD_STRIP);   // Mulai menggambar strip quad
+
+        for (int j = 0; j <= slices; j++) {
+            float angle = 2.0f * M_PI * j / slices; // Sudut untuk lingkaran horizontal
+            float x = cos(angle);
+            float y = sin(angle);
+
+            // Posisi untuk tumpukan saat ini dan berikutnya
+            float z1 = cos(M_PI * t);
+            float z2 = cos(M_PI * nextT);
+
+            glVertex3f(5.0f * x * sin(M_PI * t), 5.0f * y * sin(M_PI * t), 5.0f * z1);
+            glVertex3f(5.0f * x * sin(M_PI * nextT), 5.0f * y * sin(M_PI * nextT), 5.0f * z2);
+        }
+        glEnd(); // Selesai menggambar strip quad
+    }
+
     glPopMatrix();
     glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
+}
+
+void drawAwan1() {//by naufal
+ 	glDisable(GL_LIGHTING); 
+    glPushMatrix();
+
+    // Posisikan awan
+    glTranslatef(cloud1PosX, cloud1PosY, cloud1PosZ);
+
+    // Gambar tiga sphere untuk membentuk awan
+    glColor3f(1.0f, 1.0f, 1.0f); // Warna putih untuk awan
+    glutSolidSphere(4.0, 20, 20); // Sphere pertama
+
+    glPushMatrix();
+    glTranslatef(5.0f, 0.0f, 0.0f);
+    glutSolidSphere(3.0, 20, 20); // Sphere kedua
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-5.0f, 0.0f, 0.0f);
+    glutSolidSphere(3.0f, 20, 20); // Sphere ketiga
+    glPopMatrix();
+    
+    glEnable(GL_LIGHTING);
+    
+    glPopMatrix();
+
+}
+
+void drawAwan2() {//by naufal
+	glDisable(GL_LIGHTING); 
+    glPushMatrix();
+
+    // Posisikan awan
+    glTranslatef(cloud2PosX, cloud2PosY, cloud2PosZ);
+    
+
+    // Gambar tiga sphere untuk membentuk awan
+    glColor3f(1.0f, 1.0f, 1.0f); // Warna putih untuk awan
+    glutSolidSphere(4.0, 20, 20); // Sphere pertama
+
+    glPushMatrix();
+    glTranslatef(5.0f, 0.0f, 0.0f);
+    glutSolidSphere(3.0, 20, 20); // Sphere kedua
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-5.0f, 0.0f, 0.0f);
+    glutSolidSphere(3.0f, 20, 20); // Sphere ketiga
+    glPopMatrix();
+    
+    glEnable(GL_LIGHTING);
+    
+    glPopMatrix();
+
 }
 
 void drawCube() {  //by naufal
@@ -100,17 +197,19 @@ void display() {
 
     drawCube(); // pemanggilan function cube
 
+    drawAwan1(); // Panggil fungsi untuk menggambar awan
+	drawAwan2();
+
     if (showAxes) {
         drawAxes();
     }
 
     if (showLightCube) {
-        drawLightCube();
+        drawLight();
     }
 
     glutSwapBuffers();
 }
-
 
 void reshape(int w, int h) {
     glViewport(0, 0, w, h);
@@ -191,7 +290,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
     glutCreateWindow("PYRAMID");
-	glutFullScreen();
+
     init();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
