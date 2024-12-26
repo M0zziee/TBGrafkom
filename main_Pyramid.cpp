@@ -290,7 +290,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
     glutCreateWindow("PYRAMID");
-
+    glutFullScreen();	
     init();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
