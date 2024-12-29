@@ -40,6 +40,201 @@ void init() {
     glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
 }
 
+void drawCylinder(float radius, float height, int slices) {
+    float x, y, z, angle;
+    
+    // Draw the tube
+    glBegin(GL_QUAD_STRIP);
+    for (int i = 0; i <= slices; i++) {
+        angle = 2.0f * M_PI * (float)i / (float)slices;
+        x = radius * cosf(angle);
+        z = radius * sinf(angle);
+        
+        glNormal3f(x/radius, 0.0f, z/radius);
+        glVertex3f(x, 0.0f, z);
+        glVertex3f(x, height, z);
+    }
+    glEnd();
+    
+    // Draw the top and bottom circles
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, 1.0f, 0.0f);
+    for (int i = slices; i >= 0; i--) {
+        angle = 2.0f * M_PI * (float)i / (float)slices;
+        x = radius * cosf(angle);
+        z = radius * sinf(angle);
+        glVertex3f(x, height, z);
+    }
+    glEnd();
+    
+    glBegin(GL_POLYGON);
+    glNormal3f(0.0f, -1.0f, 0.0f);
+    for (int i = 0; i <= slices; i++) {
+        angle = 2.0f * M_PI * (float)i / (float)slices;
+        x = radius * cosf(angle);
+        z = radius * sinf(angle);
+        glVertex3f(x, 0.0f, z);
+    }
+    glEnd();
+}
+
+void drawCactus1() {
+    glPushMatrix();
+    
+    // Posisikan kaktus di samping pyramid
+    glTranslatef(20.0f, 0.0f, 20.0f);
+    
+    // Batang utama
+    drawCylinder(0.5f, 5.0f, 32);  
+    
+    // Cabang kanan
+    glPushMatrix();
+    glTranslatef(0.0f, 3.0f, 0.0f);  
+    glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32);  
+    glPopMatrix();
+    
+    // Cabang kiri
+    glPushMatrix();
+    glTranslatef(0.0f, 2.0f, 0.0f);  
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32); 
+    glPopMatrix();
+    
+    glPopMatrix();
+}
+
+
+void drawCactus2() {
+    glPushMatrix();
+    
+    // Posisikan kaktus di samping pyramid
+    glTranslatef(-20.0f, 0.0f, -20.0f);
+    
+    // Batang utama
+   drawCylinder(0.5f, 5.0f, 32); 
+    
+    // Cabang kanan
+    glPushMatrix();
+    glTranslatef(0.0f, 3.0f, 0.0f); 
+    glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32); 
+    glPopMatrix();
+    
+    // Cabang kiri
+    glPushMatrix();
+    glTranslatef(0.0f, 2.0f, 0.0f);  
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32);  
+    glPopMatrix();
+    
+    glPopMatrix();
+}
+
+void drawCactus3() {
+    glPushMatrix();
+    
+    // Posisikan kaktus di samping pyramid
+    glTranslatef(-24.0f, 0.0f, -23.0f);
+    
+    // Batang utama
+    drawCylinder(0.5f, 5.0f, 32);  
+    
+    // Cabang kanan
+    glPushMatrix();
+    glTranslatef(0.0f, 3.0f, 0.0f);  
+    glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32);  
+    glPopMatrix();
+    
+    // Cabang kiri
+    glPushMatrix();
+    glTranslatef(0.0f, 2.0f, 0.0f);  
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32); 
+    glPopMatrix();
+    
+    glPopMatrix();
+}
+
+void drawCactus4() {
+    glPushMatrix();
+    
+    // Posisikan kaktus di samping pyramid
+    glTranslatef(-23.0f, 0.0f, 10.0f);
+    
+    // Batang utama
+    drawCylinder(0.5f, 5.0f, 32);  
+    
+    // Cabang kanan
+    glPushMatrix();
+    glTranslatef(0.0f, 3.0f, 0.0f);  
+    glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32);  
+    glPopMatrix();
+    
+    // Cabang kiri
+    glPushMatrix();
+    glTranslatef(0.0f, 2.0f, 0.0f);  
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32); 
+    glPopMatrix();
+    
+    glPopMatrix();
+}
+
+void drawCactus5() {
+    glPushMatrix();
+    
+    // Posisikan kaktus di samping pyramid
+    glTranslatef(13.0f, 0.0f, -10.0f);
+    
+    // Batang utama
+    drawCylinder(0.5f, 5.0f, 32);  
+    
+    // Cabang kanan
+    glPushMatrix();
+    glTranslatef(0.0f, 3.0f, 0.0f);  
+    glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32);  
+    glPopMatrix();
+    
+    // Cabang kiri
+    glPushMatrix();
+    glTranslatef(0.0f, 2.0f, 0.0f);  
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32); 
+    glPopMatrix();
+    
+    glPopMatrix();
+}
+
+void drawCactus6() {
+    glPushMatrix();
+    
+    // Posisikan kaktus di samping pyramid
+    glTranslatef(-13.0f, 0.0f, 15.0f);
+    
+    // Batang utama
+    drawCylinder(0.5f, 5.0f, 32);  
+    
+    // Cabang kanan
+    glPushMatrix();
+    glTranslatef(0.0f, 3.0f, 0.0f);  
+    glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32);  
+    glPopMatrix();
+    
+    // Cabang kiri
+    glPushMatrix();
+    glTranslatef(0.0f, 2.0f, 0.0f);  
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+    drawCylinder(0.35f, 2.0f, 32); 
+    glPopMatrix();
+    
+    glPopMatrix();
+}
+
 void drawAxes() {
     glDisable(GL_LIGHTING); // Matikan pencahayaan untuk sumbu
     glBegin(GL_LINES);
@@ -196,7 +391,12 @@ void display() {
     glPopMatrix();
 
     drawCube(); // pemanggilan function cube
-
+	drawCactus1(); // panggil kaktus ke 1
+	drawCactus2(); // panggil kaktus ke 2
+	drawCactus3(); // panggil kaktus ke 3
+	drawCactus4(); // panggil kaktus ke 4
+	drawCactus5(); // panggil kaktus ke 5
+	drawCactus6(); // panggil kaktus ke 6
     drawAwan1(); // Panggil fungsi untuk menggambar awan
 	drawAwan2();
 
