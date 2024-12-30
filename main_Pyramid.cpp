@@ -18,15 +18,6 @@ float lightPosY = 10.0f;
 float lightPosZ = 10.0f;
 bool showLightCube = true; // Status untuk menampilkan kubus penanda cahaya
 
-// posisi awan pertama
-float cloud1PosX = 20.0f;
-float cloud1PosY = 24.0f;
-float cloud1PosZ = -29.0f;
-
-// posisi awan kedua
-float cloud2PosX = -20.0f;
-float cloud2PosY = 24.0f;
-float cloud2PosZ = -29.0f;
 
 int lastMouseX, lastMouseY; // Posisi terakhir kursor mouse
 bool isDragging = false;    // Status apakah mouse sedang digunakan
@@ -195,15 +186,18 @@ void drawLight()
     glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
 }
 
-void drawAwan1()
-{ // by naufal
-    glDisable(GL_LIGHTING);
+/*
+==========================================Awan==========================================
+created by naufal
+*/
+void drawAwan(float x, float y, float z)
+{ 
+
     glPushMatrix();
 
     // Posisikan awan
-    glTranslatef(cloud1PosX, cloud1PosY, cloud1PosZ);
+    glTranslatef(x, y, z);
 
-    // Gambar tiga sphere untuk membentuk awan
     glColor3f(1.0f, 1.0f, 1.0f);  // Warna putih untuk awan
     glutSolidSphere(4.0, 20, 20); // Sphere pertama
 
@@ -216,49 +210,23 @@ void drawAwan1()
     glTranslatef(-5.0f, 0.0f, 0.0f);
     glutSolidSphere(3.0f, 20, 20); // Sphere ketiga
     glPopMatrix();
-
-    glEnable(GL_LIGHTING);
-
-    glPopMatrix();
-}
-
-void drawAwan2()
-{ // by naufal
-    glDisable(GL_LIGHTING);
-    glPushMatrix();
-
-    // Posisikan awan
-    glTranslatef(cloud2PosX, cloud2PosY, cloud2PosZ);
-
-    // Gambar tiga sphere untuk membentuk awan
-    glColor3f(1.0f, 1.0f, 1.0f);  // Warna putih untuk awan
-    glutSolidSphere(4.0, 20, 20); // Sphere pertama
-
-    glPushMatrix();
-    glTranslatef(5.0f, 0.0f, 0.0f);
-    glutSolidSphere(3.0, 20, 20); // Sphere kedua
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(-5.0f, 0.0f, 0.0f);
-    glutSolidSphere(3.0f, 20, 20); // Sphere ketiga
-    glPopMatrix();
-
-    glEnable(GL_LIGHTING);
 
     glPopMatrix();
 }
 
 void drawCube()
-{ // by naufal
+{ 
     glPushMatrix();
     glTranslatef(0.0f, -15.0f, 0.0f); // Posisikan kubus di bawah oktahedron
     glScalef(-70.0f, 30.0f, 80.0f);   // Sesuaikan ukuran kubus
-    // glColor3f(0.0f, 0.0f, 1.0f);      // Warna biru untuk kubus
     glutSolidCube(1.0f);
     glPopMatrix();
 }
 
+/*
+==========================================Awan==========================================
+created by :
+*/
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -297,8 +265,8 @@ void display()
     drawCactus(17, 0, 10);
     drawCactus(14, 0, 12);
     glColor3ub(244, 244, 244);
-    drawAwan1(); // Panggil fungsi untuk menggambar awan
-    drawAwan2();
+    drawAwan(20, 24, -29); 
+    drawAwan(-20 ,24 ,-29);
 
     if (showAxes)
     {
