@@ -16,6 +16,8 @@ float cameraDistance = 70.0f;
 float lightPosX = 10.0f;
 float lightPosY = 10.0f;
 float lightPosZ = 10.0f;
+
+bool is2DMode = false;
 bool showLightCube = true; // Status untuk menampilkan kubus penanda cahaya
 
 
@@ -149,38 +151,9 @@ void drawLight()
     // Posisikan bola matahari di lokasi cahaya
     glTranslatef(lightPosX, lightPosY, lightPosZ);
 
-    // Membuat efek warna gradasi dari oranye ke kuning
-    int slices = 50;            // Jumlah potongan bola
-    int stacks = 50;            // Jumlah tumpukan bola
-    float step = 1.0f / stacks; // Langkah gradasi warna berdasarkan tumpukan
-
-    for (int i = 0; i < stacks; i++)
-    {
-        float t = i * step; // Fraksi warna dari 0.0 ke 1.0
-        float nextT = (i + 1) * step;
-
-        float r = 1.0f;            // Komponen merah (selalu penuh untuk oranye dan kuning)
-        float g = 0.5f + 0.5f * t; // Komponen hijau (bertambah untuk gradasi ke kuning)
-        float b = 0.0f;            // Komponen biru (nol untuk oranye ke kuning)
-
-        glColor3f(r, g, b);     // Atur warna untuk tumpukan saat ini
-        glBegin(GL_QUAD_STRIP); // Mulai menggambar strip quad
-
-        for (int j = 0; j <= slices; j++)
-        {
-            float angle = 2.0f * M_PI * j / slices; // Sudut untuk lingkaran horizontal
-            float x = cos(angle);
-            float y = sin(angle);
-
-            // Posisi untuk tumpukan saat ini dan berikutnya
-            float z1 = cos(M_PI * t);
-            float z2 = cos(M_PI * nextT);
-
-            glVertex3f(5.0f * x * sin(M_PI * t), 5.0f * y * sin(M_PI * t), 5.0f * z1);
-            glVertex3f(5.0f * x * sin(M_PI * nextT), 5.0f * y * sin(M_PI * nextT), 5.0f * z2);
-        }
-        glEnd(); // Selesai menggambar strip quad
-    }
+    // Atur warna tetap untuk cahaya (oranye)
+    glColor3f(1.0f, 0.7f, 0.0f); // Warna oranye kekuningan untuk matahari
+    glutSolidSphere(5.0, 20, 20); // Menggambar bola sebagai representasi cahaya
 
     glPopMatrix();
     glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
@@ -221,6 +194,33 @@ void drawCube()
     glScalef(-70.0f, 30.0f, 80.0f);   // Sesuaikan ukuran kubus
     glutSolidCube(1.0f);
     glPopMatrix();
+}
+
+void processMenu(int option)
+{
+	switch(option)
+	{
+	case 1:
+		is2DMode = false;
+		glClearColor(132.0f / 255.0f, 198.0f / 255.0f, 227.0f / 255.0f, 1.0);
+		break;
+	case 2:
+		is2DMode = false;
+		glClearColor(0.1f, 0.1f, 0.2f, 1.0);
+		is2DMode = false;
+		break;
+	case 3:
+		exit(0);
+	}
+	glutPostRedisplay();
+}
+
+void createMenu() {
+    glutCreateMenu(processMenu);
+    glutAddMenuEntry("Mode Siang", 1);
+    glutAddMenuEntry("Mode Malam", 2);
+    glutAddMenuEntry("Keluar", 3);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 /*
@@ -392,6 +392,7 @@ int main(int argc, char **argv)
     glutFullScreen();
     init();
     glutDisplayFunc(display);
+    createMenu();
     glutReshapeFunc(reshape);
     glutMotionFunc(mouseMotion);
     glutMouseFunc(mouseClick);
