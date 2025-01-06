@@ -1,3 +1,4 @@
+
 #include <GL/glut.h>
 #include <cmath>
 
@@ -201,10 +202,12 @@ void processMenu(int option)
 	switch(option)
 	{
 	case 1:
+		showLightCube = true;
 		is2DMode = false;
 		glClearColor(132.0f / 255.0f, 198.0f / 255.0f, 227.0f / 255.0f, 1.0);
 		break;
 	case 2:
+		showLightCube = false;
 		is2DMode = false;
 		glClearColor(0.1f, 0.1f, 0.2f, 1.0);
 		is2DMode = false;
