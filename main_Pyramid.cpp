@@ -6,7 +6,6 @@
 /*
 ==========================================Global Variables==========================================
 */
-
 // Variable Untuk Posisi Kamera
 float cameraAngleX = 5.0f;
 float cameraAngleY = 1.0f;
