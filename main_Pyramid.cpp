@@ -3,7 +3,11 @@
 
 #define M_PI 3.14159265358979323846
 
+/*
+==========================================Global Variables==========================================
+*/
 
+// Variable Untuk Posisi Kamera
 float cameraAngleX = 5.0f;
 float cameraAngleY = 1.0f;
 float cameraDistance = 70.0f;
@@ -28,7 +32,14 @@ void initFirstScene();
 int window_id = -1;
 void changeScene(const char *tittle, void (*displayCallback)(void), void (*initCallback)(void));
 void mainScene();
+/*
+==========================================Global Variables==========================================
+*/
 
+
+/*
+==========================================BY NAUFAL==========================================
+*/
 void loadingScreen()
 {
 	glClearColor(0.1, 0.1, 0.1, 1.0);
@@ -61,22 +72,14 @@ void loadingScreen()
         changeScene("PIRADMID", mainScene, initSecondsScene);
     }
 }
-void drawCartecius()
-{
-    glLineWidth(1.0);
-    glColor3f(0.0, 0.0, 0.0);
-    glBegin(GL_LINES);
+/*
+==========================================BY NAUFAL==========================================
+*/
 
-    glVertex3f(-50.0, 0.0, 0.0);
-    glVertex3f(50.0, 0.0, 0.0);
 
-    glVertex3f(0.0, -50.0, 0.0);
-    glVertex3f(0.0, 50.0, 0.0);
-
-    glVertex3f(0.0, 0.0, -50.0);
-    glVertex3f(0.0, 0.0, 50.0);
-}
-
+/*
+==========================================BY FATHIR==========================================
+*/
 void init()
 {
 	
@@ -93,11 +96,13 @@ void init()
     glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
 }
-
 /*
-==========================================Global Variables==========================================
+==========================================BY FATHIR==========================================
 */
 
+/*
+==========================================BY FATHIR==========================================
+*/
 void drawCylinder(float radius, float height, int slices)
 {
     float x, y, z, angle;
@@ -190,7 +195,13 @@ void drawAxes()
     glEnd();
     glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
 }
+/*
+==========================================BY FATHIR==========================================
+*/
 
+/*
+==========================================BY ARIEF==========================================
+*/
 void drawLight()
 {
     glDisable(GL_LIGHTING); // Matikan pencahayaan untuk bola matahari
@@ -206,10 +217,12 @@ void drawLight()
     glPopMatrix();
     glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
 }
+/*
+==========================================BY ARIEF==========================================
+*/
 
 /*
-==========================================Awan==========================================
-created by naufal
+==========================================BY NAUFAL==========================================
 */
 void drawAwan(float x, float y, float z)
 { 
@@ -243,7 +256,13 @@ void drawCube()
     glutSolidCube(1.0f);
     glPopMatrix();
 }
+/*
+==========================================BY NAUFAL==========================================
+*/
 
+/*
+==========================================BY ARIEF==========================================
+*/
 void processMenu(int option)
 {
 	switch(option)
@@ -272,8 +291,13 @@ void createMenu() {
     glutAddMenuEntry("Keluar", 3);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
+/*
+==========================================BY ARIEF==========================================
+*/
 
-
+/*
+==========================================BY FATHIR==========================================
+*/
 void mainScene()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -429,7 +453,13 @@ void keyboard(unsigned char key, int x, int y)
         glutPostRedisplay();
     }
 }
+/*
+==========================================BY FATHIR==========================================
+*/
 
+/*
+==========================================BY NAUFAL==========================================
+*/
 void initFirstScene()
 {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
@@ -470,7 +500,13 @@ void changeScene(const char *title, void (*displayCallback)(void), void (*initCa
     glutKeyboardFunc(keyboard);
     glutFullScreen();
 }
+/*
+==========================================BY NAUFAL==========================================
+*/
 
+/*
+==========================================BY FATHIR==========================================
+*/
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
@@ -480,3 +516,6 @@ int main(int argc, char **argv)
     glutMainLoop();
     return 0;
 }
+/*
+==========================================BY FATHIR==========================================
+*/
