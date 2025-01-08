@@ -1,14 +1,9 @@
-
 #include <GL/glut.h>
-#include <cmath>
+#include <math.h>
 
 #define M_PI 3.14159265358979323846
 
-/*
-==========================================Global Variables==========================================
-*/
 
-// Variabel untuk kontrol kamera
 float cameraAngleX = 5.0f;
 float cameraAngleY = 1.0f;
 float cameraDistance = 70.0f;
@@ -26,13 +21,65 @@ int lastMouseX, lastMouseY; // Posisi terakhir kursor mouse
 bool isDragging = false;    // Status apakah mouse sedang digunakan
 bool showAxes = false;      // Status untuk menampilkan garis kartesius
 
-/*
-==========================================Global Variables==========================================
-created by: kipli
-*/
+float progress = 0.0;
+
+void initSecondsScene();
+void initFirstScene();
+int window_id = -1;
+void changeScene(const char *tittle, void (*displayCallback)(void), void (*initCallback)(void));
+void mainScene();
+
+void loadingScreen()
+{
+	glClearColor(0.1, 0.1, 0.1, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glColor3ub(255, 0, 0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2d(-800, -5);
+    glVertex2d(-800, 5);
+    glVertex2d(800, 5);
+    glVertex2d(800, -5);
+    glEnd();
+
+    float bar = -800 + (800 * (progress * 2));
+    glBegin(GL_QUADS);
+    glVertex2d(-800, -5);
+    glVertex2d(-800, 5);
+    glVertex2d(bar, 5);
+    glVertex2d(bar, -5);
+    glEnd();
+    
+   	glutSwapBuffers();
+	
+    if (progress < 1.0)
+    {
+        progress += 0.001;
+        glutPostRedisplay();
+    }
+    else
+    {
+        changeScene("PIRADMID", mainScene, initSecondsScene);
+    }
+}
+void drawCartecius()
+{
+    glLineWidth(1.0);
+    glColor3f(0.0, 0.0, 0.0);
+    glBegin(GL_LINES);
+
+    glVertex3f(-50.0, 0.0, 0.0);
+    glVertex3f(50.0, 0.0, 0.0);
+
+    glVertex3f(0.0, -50.0, 0.0);
+    glVertex3f(0.0, 50.0, 0.0);
+
+    glVertex3f(0.0, 0.0, -50.0);
+    glVertex3f(0.0, 0.0, 50.0);
+}
 
 void init()
 {
+	
     glEnable(GL_COLOR_MATERIAL);                                    // Aktifkan material warna
     glClearColor(132.0 / 255.0, 198.0 / 255.0, 227.0 / 255.0, 1.0); // Warna latar belakang abu-abu
     glEnable(GL_DEPTH_TEST);                                        // Mengaktifkan depth testing
@@ -226,14 +273,11 @@ void createMenu() {
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
-/*
-==========================================Awan==========================================
-created by :
-*/
-void display()
+
+void mainScene()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+	glLoadIdentity();
 
     // Atur kamera
     float cameraPosX = cameraDistance * sinf(cameraAngleX) * cosf(cameraAngleY);
@@ -283,7 +327,7 @@ void display()
 
     glutSwapBuffers();
 }
-
+  
 void reshape(int w, int h)
 {
     glViewport(0, 0, w, h);
@@ -386,20 +430,53 @@ void keyboard(unsigned char key, int x, int y)
     }
 }
 
-int main(int argc, char **argv)
+void initFirstScene()
 {
-    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-100, 100, -100, 100);
+    glMatrixMode(GL_MODELVIEW);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+}
+
+void initSecondsScene()
+{
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(800, 600);
-    glutCreateWindow("PYRAMID");
-    glutFullScreen();
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_COLOR_MATERIAL);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(70.0, 1.0, 1.0, 100.0);
+    gluLookAt(10.0, 10.0, 17.0,
+              0.0, 0.0, 0.0,
+              0.0, 1.0, 0.0);
+    glMatrixMode(GL_MODELVIEW);
+    glClearColor(0.1, 0.1, 0.1, 1.0);
+}
+
+void changeScene(const char *title, void (*displayCallback)(void), void (*initCallback)(void))
+{
+    if (window_id != -1)
+        glutDestroyWindow(window_id);
+    window_id = glutCreateWindow(title);
+    glutDisplayFunc(displayCallback);
+    initCallback();
     init();
-    glutDisplayFunc(display);
     createMenu();
     glutReshapeFunc(reshape);
     glutMotionFunc(mouseMotion);
     glutMouseFunc(mouseClick);
     glutKeyboardFunc(keyboard);
+    glutFullScreen();
+}
+
+int main(int argc, char **argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 800);
+    changeScene("loading....", loadingScreen, initFirstScene);
     glutMainLoop();
     return 0;
 }
