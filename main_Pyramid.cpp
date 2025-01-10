@@ -6,6 +6,20 @@
 /*
 ==========================================Global Variables==========================================
 */
+
+//rotasi awan
+struct Movement
+{
+	float rotate;
+}
+awan;
+	
+bool isMoving = true;
+
+float awanPosX = 0.0f;  
+float awanPosY = 0.0f; 
+float awanPosZ = 0.0f; 
+
 // Variable Untuk Posisi Kamera
 float cameraAngleX = 5.0f;
 float cameraAngleY = 1.0f;
@@ -223,27 +237,29 @@ void drawLight()
 /*
 ==========================================BY NAUFAL==========================================
 */
-void drawAwan(float x, float y, float z)
+
+void drawAwan(float x,float y,float z) 
 { 
-
-    glPushMatrix();
-
-    // Posisikan awan
-    glTranslatef(x, y, z);
-
+  glPushMatrix();
+     glTranslatef(x + awanPosX, y + awanPosY, z + awanPosZ);
+    
+ 
     glColor3f(1.0f, 1.0f, 1.0f);  // Warna putih untuk awan
+   	glRotated(awan.rotate, 0.0, 1.0, 0.0);
     glutSolidSphere(4.0, 20, 20); // Sphere pertama
 
     glPushMatrix();
     glTranslatef(5.0f, 0.0f, 0.0f);
+    glRotated(awan.rotate, 0.0, 1.0, 0.0);
     glutSolidSphere(3.0, 20, 20); // Sphere kedua
     glPopMatrix();
 
     glPushMatrix();
-    glTranslatef(-5.0f, 0.0f, 0.0f);
+   	glTranslatef(-5.0f, 0.0f, 0.0f);
+    glRotated(awan.rotate, 0.0, 1.0, 0.0);
     glutSolidSphere(3.0f, 20, 20); // Sphere ketiga
     glPopMatrix();
-
+	
     glPopMatrix();
 }
 
@@ -278,6 +294,9 @@ void processMenu(int option)
 		is2DMode = false;
 		break;
 	case 3:
+		isMoving = !isMoving;
+		break;
+	case 4:
 		exit(0);
 	}
 	glutPostRedisplay();
@@ -287,7 +306,8 @@ void createMenu() {
     glutCreateMenu(processMenu);
     glutAddMenuEntry("Mode Siang", 1);
     glutAddMenuEntry("Mode Malam", 2);
-    glutAddMenuEntry("Keluar", 3);
+    glutAddMenuEntry("Pegerakan Awan",3);
+    glutAddMenuEntry("Keluar", 4);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 /*
@@ -334,9 +354,33 @@ void mainScene()
     drawCactus(17, 0, -10);
     drawCactus(17, 0, 10);
     drawCactus(14, 0, 12);
+    
+    //awan 
+    glPushMatrix();
+  
+    glScalef(2.0f,1.0f,2.0f);
     glColor3ub(244, 244, 244);
-    drawAwan(20, 24, -29); 
-    drawAwan(-20 ,24 ,-29);
+    drawAwan(0, 24, 10); 
+    drawAwan(0 ,25 ,9);
+    drawAwan(10, 24, 10); 
+    drawAwan(4, 24, 10); 
+    drawAwan(7 ,24 ,9);
+    glPopMatrix();
+    
+    glPushMatrix();
+glScalef(2.0f, 1.0f, 2.0f);
+glColor3ub(244, 244, 244);
+
+// Membalikkan posisi X dan Z
+drawAwan(-0, 24, 10);  // Berkebalikan di sumbu X
+drawAwan(0 ,25 ,9);
+drawAwan(-10, 24, 10); // Berkebalikan di sumbu X dan Z
+drawAwan(-4, 24, 10);  // Berkebalikan di sumbu X
+drawAwan(-7 ,24 ,9);   // Berkebalikan di sumbu X
+
+glPopMatrix();
+
+
 
     if (showAxes)
     {
@@ -451,6 +495,27 @@ void keyboard(unsigned char key, int x, int y)
         showLightCube = !showLightCube;
         glutPostRedisplay();
     }
+    else if (key == 'f' || key == 'F')
+    { // Gerakkan awab ke kiri
+        awanPosX -= 1.0f;
+        glutPostRedisplay();
+    }
+    else if (key == 't' || key == 'T')
+    { // Gerakkan awan ke depan
+        awanPosZ += 1.0f;
+        glutPostRedisplay();
+    }
+    else if (key == 'h' || key == 'H')
+    { // Gerakkan cahaya ke kanan
+        awanPosX += 1.0f;
+        glutPostRedisplay();
+    }
+    else if (key == 'g' || key == 'G')
+    { // gerakakan awan ke belakang
+        awanPosZ -= 1.0f;
+        glutPostRedisplay();
+    }
+   
 }
 /*
 ==========================================BY FATHIR==========================================
@@ -493,11 +558,30 @@ void changeScene(const char *title, void (*displayCallback)(void), void (*initCa
     initCallback();
     init();
     createMenu();
+  
     glutReshapeFunc(reshape);
     glutMotionFunc(mouseMotion);
-    glutMouseFunc(mouseClick);
+    glutMouseFunc(mouseClick); 
     glutKeyboardFunc(keyboard);
     glutFullScreen();
+}
+
+void update(int value)
+{
+
+{
+	
+		if(isMoving)
+		{
+		
+			awan.rotate += 0.1;
+				
+	}
+		glutPostRedisplay();
+		
+	}
+	glutTimerFunc(1000 / 60, update, 0);
+	
 }
 /*
 ==========================================BY NAUFAL==========================================
@@ -511,7 +595,8 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 800);
-    changeScene("loading....", loadingScreen, initFirstScene);
+    changeScene("loading....", loadingScreen, initFirstScene);  
+	glutTimerFunc(1000 / 60, update, 0);
     glutMainLoop();
     return 0;
 }
