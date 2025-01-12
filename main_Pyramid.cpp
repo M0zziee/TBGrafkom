@@ -266,7 +266,7 @@ void drawLight()
     glTranslatef(lightPosX, lightPosY, lightPosZ);
 
     // Atur warna berdasarkan mode
-    if (isNightMode)
+    if (isSphereMode)
     {
         glColor3f(1.0f, 1.0f, 1.0f); // Warna putih untuk mode malam
     }
