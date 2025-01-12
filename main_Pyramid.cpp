@@ -158,13 +158,14 @@ void drawCylinder(float radius, float height, int slices)
     glEnd();
 }
 
-void drawCactus(float x, float y, float z)
+void drawCactus(float x, float y, float z ,float size, float r) 
 {
     glPushMatrix();
 
-    // Posisikan kaktus di samping pyramid
+    // Posisikan kaktus
     glTranslatef(x, y, z);
-
+	glScalef(size,size,size);
+	glRotatef(x,y,z,r);
     // Batang utama
     drawCylinder(0.5f, 5.0f, 32);
 
@@ -347,15 +348,15 @@ void mainScene()
     glColor3ub(234, 203, 164);
     drawCube(); // pemanggilan function cube
     glColor3ub(86, 115, 46);
-    drawCactus(10, 0, 20); // panggil kaktus
-    drawCactus(-20, 0, -20);
-    drawCactus(-20, 0, 10);
-    drawCactus(-13, 0, 10);
-    drawCactus(17, 0, -10);
-    drawCactus(17, 0, 10);
-    drawCactus(14, 0, 12);
+    drawCactus(10, 0, 20,1,0); // panggil kaktus
+    drawCactus(-20, 0, -20,1,0);
+    drawCactus(-20, 0, 10,1,0);
+    drawCactus(-13, 0, 10,1,0);
+    drawCactus(17, 0, -10,1,0);
+    drawCactus(17, 0, 10,1,0);
+    drawCactus(14, 0, 12,1,0);
     
-    //awan 
+    //awan by naufal
     glPushMatrix();
   
     glScalef(2.0f,1.0f,2.0f);
@@ -368,17 +369,17 @@ void mainScene()
     glPopMatrix();
     
     glPushMatrix();
-glScalef(2.0f, 1.0f, 2.0f);
-glColor3ub(244, 244, 244);
+	glScalef(2.0f, 1.0f, 2.0f);
+	glColor3ub(244, 244, 244);
 
-// Membalikkan posisi X dan Z
-drawAwan(-0, 24, 10);  // Berkebalikan di sumbu X
-drawAwan(0 ,25 ,9);
-drawAwan(-10, 24, 10); // Berkebalikan di sumbu X dan Z
-drawAwan(-4, 24, 10);  // Berkebalikan di sumbu X
-drawAwan(-7 ,24 ,9);   // Berkebalikan di sumbu X
+	// Membalikkan posisi X dan Z
+	drawAwan(-0, 24, 10);  // Berkebalikan di sumbu X
+	drawAwan(0 ,25 ,9);
+	drawAwan(-10, 24, 10); // Berkebalikan di sumbu X dan Z
+	drawAwan(-4, 24, 10);  // Berkebalikan di sumbu X
+	drawAwan(-7 ,24 ,9);   // Berkebalikan di sumbu X
 
-glPopMatrix();
+	glPopMatrix();
 
 
 
@@ -395,7 +396,7 @@ glPopMatrix();
     glutSwapBuffers();
 }
   
-void reshape(int w, int h)
+void reshape(int w, int h) //resize window agar tidak streched
 {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
