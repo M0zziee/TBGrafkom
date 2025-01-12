@@ -30,7 +30,7 @@ float lightPosX = 10.0f;
 float lightPosY = 10.0f;
 float lightPosZ = 10.0f;
 
-bool is2DMode = false;
+bool isSphereMode = false;
 bool showLightCube = true; // Status untuk menampilkan kubus penanda cahaya
 
 
@@ -214,28 +214,6 @@ void drawAxes()
 */
 
 /*
-==========================================BY ARIEF==========================================
-*/
-void drawLight()
-{
-    glDisable(GL_LIGHTING); // Matikan pencahayaan untuk bola matahari
-    glPushMatrix();
-
-    // Posisikan bola matahari di lokasi cahaya
-    glTranslatef(lightPosX, lightPosY, lightPosZ);
-
-    // Atur warna tetap untuk cahaya (oranye)
-    glColor3f(1.0f, 0.7f, 0.0f); // Warna oranye kekuningan untuk matahari
-    glutSolidSphere(5.0, 20, 20); // Menggambar bola sebagai representasi cahaya
-
-    glPopMatrix();
-    glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
-}
-/*
-==========================================BY ARIEF==========================================
-*/
-
-/*
 ==========================================BY NAUFAL==========================================
 */
 
@@ -279,20 +257,41 @@ void drawCube()
 /*
 ==========================================BY ARIEF==========================================
 */
+void drawLight()
+{
+    glDisable(GL_LIGHTING); // Matikan pencahayaan untuk bola matahari
+    glPushMatrix();
+
+    // Posisikan bola matahari di lokasi cahaya
+    glTranslatef(lightPosX, lightPosY, lightPosZ);
+
+    // Atur warna berdasarkan mode
+    if (isNightMode)
+    {
+        glColor3f(1.0f, 1.0f, 1.0f); // Warna putih untuk mode malam
+    }
+    else
+    {
+        glColor3f(1.0f, 0.7f, 0.0f); // Warna oranye untuk mode siang
+    }
+
+    glutSolidSphere(5.0, 20, 20); // Menggambar bola sebagai representasi cahaya
+
+    glPopMatrix();
+    glEnable(GL_LIGHTING); // Aktifkan kembali pencahayaan
+}
+
 void processMenu(int option)
 {
 	switch(option)
 	{
 	case 1:
-		showLightCube = true;
-		is2DMode = false;
+        	isSphereMode = false;
 		glClearColor(132.0f / 255.0f, 198.0f / 255.0f, 227.0f / 255.0f, 1.0);
-		break;
+	break;
 	case 2:
-		showLightCube = false;
-		is2DMode = false;
-		glClearColor(0.1f, 0.1f, 0.2f, 1.0);
-		is2DMode = false;
+        	isSphereMode = true; 
+        	glClearColor(0.1f, 0.1f, 0.2f, 1.0);
 		break;
 	case 3:
 		isMoving = !isMoving;
