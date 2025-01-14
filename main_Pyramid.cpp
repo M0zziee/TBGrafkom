@@ -176,8 +176,8 @@ void drawAwan(float x,float y,float z)
   	glPushMatrix();
     glTranslatef(x + awanPosX, y + awanPosY, z + awanPosZ);
  
-    glColor3f(1.0f, 1.0f, 1.0f);  // Warna putih untuk awan
-   	glRotated(awan.rotate, 0.0, 1.0, 0.0);
+     
+    glRotated(awan.rotate, 0.0, 1.0, 0.0);
     glutSolidSphere(4.0, 20, 20); // Sphere pertama
 
     glPushMatrix();
