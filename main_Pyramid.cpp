@@ -1,3 +1,4 @@
+
 #include <GL/glut.h>
 #include <math.h>
 
@@ -38,55 +39,8 @@ int lastMouseX, lastMouseY; // Posisi terakhir kursor mouse
 bool isDragging = false;    // Status apakah mouse sedang digunakan
 bool showAxes = false;      // Status untuk menampilkan garis kartesius
 
-float progress = 0.0;
-
-void initSecondsScene();
-void initFirstScene();
-int window_id = -1;
-void changeScene(const char *tittle, void (*displayCallback)(void), void (*initCallback)(void));
-void mainScene();
 /*
 ==========================================Global Variables==========================================
-*/
-
-
-/*
-==========================================BY NAUFAL==========================================
-*/
-void loadingScreen()
-{
-	glClearColor(0.1, 0.1, 0.1, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glColor3ub(255, 0, 0);
-    glBegin(GL_LINE_LOOP);
-    glVertex2d(-800, -5);
-    glVertex2d(-800, 5);
-    glVertex2d(800, 5);
-    glVertex2d(800, -5);
-    glEnd();
-
-    float bar = -800 + (800 * (progress * 2));
-    glBegin(GL_QUADS);
-    glVertex2d(-800, -5);
-    glVertex2d(-800, 5);
-    glVertex2d(bar, 5);
-    glVertex2d(bar, -5);
-    glEnd();
-    
-   	glutSwapBuffers();
-	
-    if (progress < 1.0)
-    {
-        progress += 0.001;
-        glutPostRedisplay();
-    }
-    else
-    {
-        changeScene("PIRADMID", mainScene, initSecondsScene);
-    }
-}
-/*
-==========================================BY NAUFAL==========================================
 */
 
 
@@ -219,9 +173,8 @@ void drawAxes()
 
 void drawAwan(float x,float y,float z) 
 { 
-  glPushMatrix();
-     glTranslatef(x + awanPosX, y + awanPosY, z + awanPosZ);
-    
+  	glPushMatrix();
+    glTranslatef(x + awanPosX, y + awanPosY, z + awanPosZ);
  
     glColor3f(1.0f, 1.0f, 1.0f);  // Warna putih untuk awan
    	glRotated(awan.rotate, 0.0, 1.0, 0.0);
@@ -317,7 +270,7 @@ void createMenu() {
 /*
 ==========================================BY FATHIR==========================================
 */
-void mainScene()
+void Display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -370,7 +323,6 @@ void mainScene()
     glPushMatrix();
 	glScalef(2.0f, 1.0f, 2.0f);
 	glColor3ub(244, 244, 244);
-
 	// Membalikkan posisi X dan Z
 	drawAwan(-0, 24, 10);  // Berkebalikan di sumbu X
 	drawAwan(0 ,25 ,9);
@@ -524,47 +476,6 @@ void keyboard(unsigned char key, int x, int y)
 /*
 ==========================================BY NAUFAL==========================================
 */
-void initFirstScene()
-{
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(-100, 100, -100, 100);
-    glMatrixMode(GL_MODELVIEW);
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-}
-
-void initSecondsScene()
-{
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_COLOR_MATERIAL);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(70.0, 1.0, 1.0, 100.0);
-    gluLookAt(10.0, 10.0, 17.0,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0);
-    glMatrixMode(GL_MODELVIEW);
-    glClearColor(0.1, 0.1, 0.1, 1.0);
-}
-
-void changeScene(const char *title, void (*displayCallback)(void), void (*initCallback)(void))
-{
-    if (window_id != -1)
-        glutDestroyWindow(window_id);
-    window_id = glutCreateWindow(title);
-    glutDisplayFunc(displayCallback);
-    initCallback();
-    init();
-    createMenu();
-  
-    glutReshapeFunc(reshape);
-    glutMotionFunc(mouseMotion);
-    glutMouseFunc(mouseClick); 
-    glutKeyboardFunc(keyboard);
-    glutFullScreen();
-}
 
 void update(int value)
 {
@@ -590,16 +501,25 @@ void update(int value)
 /*
 ==========================================BY FATHIR==========================================
 */
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(800, 800);
-    changeScene("loading....", loadingScreen, initFirstScene);  
-	glutTimerFunc(1000 / 60, update, 0);
-    glutMainLoop();
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); 
+    glutInitWindowSize(800, 600); 
+    glutCreateWindow("PYRAMID"); 
+    init();
+    glutDisplayFunc(Display);           
+    glutReshapeFunc(reshape);           
+    glutKeyboardFunc(keyboard);         
+    glutMouseFunc(mouseClick);          
+    glutMotionFunc(mouseMotion);       
+    glutTimerFunc(1000 / 60, update, 0);
+    createMenu(); 
+    glutFullScreen();
+    glutMainLoop(); 
     return 0;
 }
+
 /*
 ==========================================BY FATHIR==========================================
 */
