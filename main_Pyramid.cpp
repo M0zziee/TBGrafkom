@@ -30,9 +30,10 @@ float cameraDistance = 70.0f;
 float lightPosX = 10.0f;
 float lightPosY = 10.0f;
 float lightPosZ = 10.0f;
+float scale=1.0f; 
 
 bool isSphereMode = false;
-bool showLightCube = true; // Status untuk menampilkan kubus penanda cahaya
+bool showLightCube = true;// Status untuk menampilkan kubus penanda cahaya
 
 
 int lastMouseX, lastMouseY; // Posisi terakhir kursor mouse
@@ -217,6 +218,7 @@ void drawLight()
 
     // Posisikan bola matahari di lokasi cahaya
     glTranslatef(lightPosX, lightPosY, lightPosZ);
+    glScalef(scale, scale, scale); // Tambahkan transformasi skala
 
     // Atur warna berdasarkan mode
     if (isSphereMode)
@@ -465,6 +467,16 @@ void keyboard(unsigned char key, int x, int y)
     else if (key == 'g' || key == 'G')
     { // gerakakan awan ke belakang
         awanPosZ -= 1.0f;
+        glutPostRedisplay();
+    }
+    else if (key == '=')
+    {
+        scale += 0.1f; // Perbesar matahari
+        glutPostRedisplay();
+    }
+    else if (key == '-')
+    {
+        scale -= 0.1f; // Perkecil matahari
         glutPostRedisplay();
     }
    
